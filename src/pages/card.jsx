@@ -1,22 +1,15 @@
 import React from "react";
 
-const styles = {
-    picture: {
-        display: 'block',
-        animation: 'fadeIn',
-        'animationDuration': '3s'
-    },
-    txt: {
-        textAlign: 'center',
-        padding: '15px 0',
-        fontWeight: '350'
-    }
-}
-
-export default function Card({cardId}) {
-    return(
+export default function Card({cardId, info, spravka, status}) {
+    return(!status ?
         <div className="card-container" onClick={() => console.log(cardId)}>
-            <img alt={`card${cardId}`} src={`/images/card${cardId}.jpg`} style={styles.picture}/>
+            <img className="picture" alt={`card${cardId}`} src={`/images/card${cardId}.jpg`}/>
+            <div className="cardText">{info}</div>
+            {/*<div style={styles.txt}>{info.description}</div>*/}
+        </div>
+        :
+        <div className="card-container" onClick={() => console.log(cardId)}>
+            <div className="spravka-text">{spravka}</div>
             {/*<div style={styles.txt}>{info.description}</div>*/}
         </div>
     )

@@ -1,6 +1,7 @@
 import React from "react";
 import axios from 'axios';
 import Card from "./pages/card.jsx"
+import result from "./init.json"
 import StartButton from "./pages/startButton.jsx"
 import 'animate.css';
 
@@ -26,16 +27,23 @@ export class App extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log('constructor');
 
     this.state = {
-      info: [],
+      info: result.info,
       isButton: true,
-      cardIds: []
+      isInfo: false,
+      cardIds: [],
+      desc: [],
+      prognoz: 'Сегодня карты говорят вам: ',
+      spravka: false,
+      spravkaText: ['Гадание таро - это приложение, в котором вам будет гадать голосовой помощник.',
+       'Для того, чтобы начать гадание, нужно нажать на кнопку "Погадать" или сказать ассистенту "погадай мне/сделай расклад".', 
+       'После этого вам будет разложен ряд карт таро с описанием. Чтобы прослушать его через ассистента скажите "объясни значение".']
     };
 
     this.tick = this.tick.bind(this);
-    this.getCards = this.getCards.bind(this)
+    this.getCards = this.getCards.bind(this);
+    this.doSmth = this.doSmth.bind(this);
 
     this.assistant = initializeAssistant(() => this.getStateForAssistant());
 
@@ -53,19 +61,18 @@ export class App extends React.Component {
   getStateForAssistant () {
     console.log('getStateForAssistant: this.state:', this.state)
     return this.state;
-    // console.log('getStateForAssistant: state:', state)
-    // return state;
   }
   
   dispatchAssistantAction (action) {
     console.log('dispatchAssistantAction', action, this.state.isButton);
     if (action) {
       switch (action.type) {
-        case 'add_note':
+        case 'make_rasclad':
           return this.makeRasclad();
 
-        case 'done_note':
-          return this.done_note(action);
+        case 'give_description':
+          return 'отлично';
+          // this.makeRascladSecondTime()
 
         default:
           throw new Error();
@@ -84,18 +91,33 @@ export class App extends React.Component {
     })
   }
 
-  tick() {
+  tick(state) {
     this.setState({
-        isButton: false 
+        isButton: !state 
       })
   }
 
+  showSpravka(state){
+    this.setState({
+      spravka: !state 
+    })
+  }
+
+  changeSpravka(){
+    const cas = this.state.spravka;
+    this.showSpravka(cas)
+  }
   componentDidMount() {
-    axios.get(`http://localhost:3002/info`)
-      .then(res => {
-        const info = res.data;
-        this.setState({ info });
-      })
+    this.setState({ info: result.info });
+    this.getCards(3);
+    this.doSmth();
+  }
+
+  doExit(){
+    this.getCards(3);
+    this.doSmth();
+    const cas = this.state.isButton;
+    this.tick(cas);
   }
 
   getCards(count) {
@@ -106,47 +128,73 @@ export class App extends React.Component {
       const newCardId = Math.floor((Math.random() * maxIndex));
       if (!cardIds.includes(newCardId)) {
         cardIds.push(newCardId);
-        console.log(newCardId, cardIds);
       }
     }
-
-    this.setState({cardIds});
+    this.state.cardIds = cardIds;
   }
 
   makeRasclad() {
-    this.getCards(3);
-    this.tick();
+    const cas = this.state.isButton;
+    this.tick(cas);
+  }
+
+  makeRascladSecondTime() {
+    this.state.isInfo = true;
+    this.tick(false);
   }
 
   renderCards() {
     return (
       this.state.cardIds.map(
-        cardId => <Card key={`card-${cardId}`} cardId={cardId}/>
+        cardId => <Card key={`card-${cardId}`} cardId={cardId} status={this.state.spravka} info={this.state.desc[this.state.cardIds.indexOf(cardId)]} spravka={this.state.spravkaText[this.state.cardIds.indexOf(cardId)]}/>
       )
     );
   }
-
+  doSmth(){
+    for (let i = 0; i < 3; i++){
+      this.state.desc.push(this.state.info[this.state.cardIds[i]].description)
+    }
+    // this.state.info.map(
+    //   info => this.state.desc.push(info.description)
+    // );
+    this.state.desc.map(
+      desc => this.state.prognoz += `${desc} `
+    );
+  }
   render() {
+    const data = this.state.desc;
     return (!this.state.isButton ?
-      <div className="container">
-        <div className="header" onClick={() => console.log(this.state.cardIds)}>
-            <div>Tarot</div>
-        </div>
-        <div className="middle">
-            {this.renderCards()}
+      <div className="back">
+        <div className="header">
+              <div className="naming">Гадание Таро</div>
+              <div className="buttons buttons-new">
+                <div className={this.state.spravka ? 'no': 'writing'} onClick={() => this.doExit()}>Выход</div>
+                <div className="writing" onClick={() => this.changeSpravka()}>Справка</div>
+              </div>
+          </div>
+        <div className="container">
+          <div className="middle first-page">
+              {this.renderCards()}
+          </div>
         </div>
       </div>
       :
-      <div className="container" onClick={() => this.makeRasclad()}>
+      <div className="back">
         <div className="header">
-            <div>Tarot</div>
-        </div>
-        <div className="middle first-page">
-          <StartButton/>
+              <div className="naming">Гадание Таро</div>
+              <div className="buttons">
+                <div className={this.state.spravka ? 'no': 'writing extra-button'} onClick={() => this.makeRasclad()}>Погадать</div>
+                <div className="writing" onClick={() => this.changeSpravka()}>Справка</div>
+                <div className="writing no">Выход</div>
+              </div>
+          </div>
+        <div className="container">
+          <div className="middle first-page">
+            <StartButton status={this.state.spravka} />
+          </div>
         </div>
       </div>
     );
   }
 }
-
 export default App;

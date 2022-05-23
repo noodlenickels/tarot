@@ -13,29 +13,178 @@ code {
 }
 
 .container{
-  background: linear-gradient(180deg, #9A6DBB 0%, #C4C4C4 90.1%);
   padding: 0 162px;
+}
+
+.back{
+  background: linear-gradient(180deg, #9A6DBB 0%, #C4C4C4 90.1%);
   height: 100vh;
 }
 
 .header{
-  text-align: center;
-  padding-top: 26px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.buttons{
+  display: flex;
+  justify-content: space-between;
+  gap: 48px;
+  padding: 52px 69px 48px;
+  align-items: center;
+}
+
+.buttons-new{
+  padding: 52px 69px 48px;
+}
+
+.writing{
+  color: white;
+  font-size: 22px;
+  padding: 8px 0;
+}
+
+.what-to-do{
+  background-color: grey;
+}
+
+.writing:hover{
+  text-decoration: underline;
+}
+
+.extra-button{
+  border: 1px absolute white;
+  background: #BEB8C3;
+  box-shadow: 3px 5px 4px #816099;
+  border-radius: 10px;
+  padding: 8px 21px;
+}
+
+.naming{
+  padding-top: 48px;
+  padding-left: 70px;
   margin-bottom: 41px;
   font-family: Yeseva One;
-  font-size: 60px;
-  font-weight: 400;
-  line-height: 69px;
   letter-spacing: 0;
   color: #FFFFFF;
+  font-size: 30px;
+
+  font-weight: 400;
+  line-height: 28px;
 }
 
 .middle{
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   gap: 140px;
 }
 
-.first-page{
+/* .first-page{
   justify-content: center;
+} */
+.text{
+  text-align: center;
+  padding: 15px 0;
+  font-weight: 350;
+  color: white;
+  animation: fadeIn;
+  animation-duration: 3s
+}
+
+.big-text{
+  padding: 0 25px;
+  text-align: center;
+  font-size: 25px;
+  font-weight: 450;
+  color: white;
+  animation: fadeIn;
+  animation-duration: 3s
+}
+
+.blankSpace{
+  border-radius: 10px;
+  border: 1px dashed white;
+
+  font-family: 'Yeseva One';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 58px;
+  color: #FFFFFF;
+
+  padding: 161px 104px;
+}
+
+.spravka-text{
+  border-radius: 10px;
+  border: 1px bold white;
+  background-color: #BEB8C3;
+  font-family: 'Yeseva One';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  color: #FFFFFF;
+  padding: 25px 14px 0 14px;
+  width: 212.546px;
+  height: 357px;
+
+  animation: fadeIn;
+  animation-duration: 2s
+}
+
+
+.cardText{
+  color: white;
+  padding-top: 10px;
+  animation: fadeIn;
+  animation-duration: 6s;
+  max-width: 240px;
+}
+
+.no{
+  display: none
+}
+
+.picture{
+  border-radius: 10px;
+  /* width: '215px', */
+  display: block;
+  animation: fadeIn;
+  animation-duration: 6s
+}
+
+@media (max-width: 1000px){
+  .middle{
+      display: grid;
+  }
+}
+
+@media (max-width: 1024px){
+  .middle{
+      gap: 40px;
+  }
+}
+
+@media (max-width: 1440px){
+  .middle{
+      gap: 100px;
+  }
+}
+
+@media (max-height: 700px){
+  /* .card-container{
+      width: 190px;
+  } */
+  .picture{
+    width: 190px;
+  }
+  .blankSpace{
+    padding: 120px 78.75px;
+  }
+  .spravka-text{
+    width: 162px;
+    height: 275px;
+    font-size: 15px;
+  }
 }
