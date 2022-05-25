@@ -37,8 +37,8 @@ export class App extends React.Component {
       prognoz: 'Сегодня карты говорят вам: ',
       spravka: false,
       spravkaText: ['Гадание таро - это приложение, в котором вам будет гадать голосовой помощник.',
-       'Для того, чтобы начать гадание, нужно нажать на кнопку "Погадать" или сказать ассистенту "погадай мне/сделай расклад".', 
-       'После этого вам будет разложен ряд карт таро с описанием. Чтобы прослушать его через ассистента скажите "объясни значение".']
+       'Для того, чтобы начать гадание, нужно нажать на кнопку «Погадать» или сказать ассистенту «погадай мне/сделай расклад».', 
+       'После этого вам будет разложен ряд карт таро с описанием. Чтобы прослушать его через ассистента скажите «объясни значение».']
     };
 
     this.tick = this.tick.bind(this);
@@ -168,7 +168,7 @@ export class App extends React.Component {
         <div className="header">
               <div className="naming">Гадание Таро</div>
               <div className="buttons buttons-new">
-                <div className={this.state.spravka ? 'no': 'writing'} onClick={() => this.doExit()}>Выход</div>
+                <div className={this.state.spravka ? 'no': 'writing'} onClick={() => this.doExit()}>В начало</div>
                 <div className="writing" onClick={() => this.changeSpravka()}>Справка</div>
               </div>
           </div>
@@ -185,7 +185,7 @@ export class App extends React.Component {
               <div className="buttons">
                 <div className={this.state.spravka ? 'no': 'writing extra-button'} onClick={() => this.makeRasclad()}>Погадать</div>
                 <div className="writing" onClick={() => this.changeSpravka()}>Справка</div>
-                <div className="writing no">Выход</div>
+                <div className="writing no">В начало</div>
               </div>
           </div>
         <div className="container">
