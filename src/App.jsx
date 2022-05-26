@@ -31,14 +31,15 @@ export class App extends React.Component {
     this.state = {
       info: result.info,
       isButton: true,
+      textSpravka: 'Справка',
       isInfo: false,
       cardIds: [],
       desc: [],
       prognoz: 'Сегодня карты говорят вам: ',
       spravka: false,
-      spravkaText: ['Гадание таро - это приложение, в котором вам будет гадать голосовой помощник.',
-       'Для того, чтобы начать гадание, нужно нажать на кнопку «Погадать» или сказать ассистенту «погадать/погадай мне/сделай расклад».', 
-       'После этого вам будет разложен ряд карт таро с описанием. Чтобы прослушать его через ассистента скажите «объясни значение».']
+      spravkaText: ['Гадание таро - это приложение, в котором гадания делает голосовой помощник.',
+       'Для того, чтобы начать гадание, нужно нажать на кнопку "Погадай мне" или сказать ассистенту "погадай мне/сделай расклад".', 
+       'После этого разложится ряд карт таро с описанием. Чтобы прослушать его через ассистента надо сказать "объясни значение".']
     };
 
     this.tick = this.tick.bind(this);
@@ -77,6 +78,9 @@ export class App extends React.Component {
         case 'call_rules':
           return this.changeSpravka();
 
+        case 'come_back':
+          return this.doExit();
+
         default:
           throw new Error();
       }
@@ -108,7 +112,14 @@ export class App extends React.Component {
 
   changeSpravka(){
     const cas = this.state.spravka;
-    this.showSpravka(cas)
+    this.showSpravka(cas);
+    if (this.state.textSpravka == 'Справка')
+    {
+      this.setState({
+        textSpravka: 'Вернуться обратно' 
+      });
+    }
+    else this.setState({textSpravka: 'Справка'})
   }
   componentDidMount() {
     this.setState({ info: result.info });
@@ -117,8 +128,12 @@ export class App extends React.Component {
   }
 
   doExit(){
+    this.setState({prognoz: 'Сегодня карты говорят вам: '})
     this.getCards(3);
+    console.log(this.state.desc)
+    this.state.desc = []
     this.doSmth();
+    console.log(this.state.desc)
     const cas = this.state.isButton;
     this.tick(cas);
   }
@@ -172,7 +187,7 @@ export class App extends React.Component {
               <div className="naming">Гадание Таро</div>
               <div className="buttons buttons-new">
                 <div className={this.state.spravka ? 'no': 'writing'} onClick={() => this.doExit()}>В начало</div>
-                <div className="writing" onClick={() => this.changeSpravka()}>Справка</div>
+                <div className="writing" onClick={() => this.changeSpravka()}>{this.state.textSpravka}</div>
               </div>
           </div>
         <div className="container">
@@ -186,8 +201,8 @@ export class App extends React.Component {
         <div className="header">
               <div className="naming">Гадание Таро</div>
               <div className="buttons">
-                <div className={this.state.spravka ? 'no': 'writing extra-button'} onClick={() => this.makeRasclad()}>Погадать</div>
-                <div className="writing" onClick={() => this.changeSpravka()}>Справка</div>
+                <div className={this.state.spravka ? 'no': 'writing extra-button'} onClick={() => this.makeRasclad()}>Погадай мне!</div>
+                <div className="writing" onClick={() => this.changeSpravka()}>{this.state.textSpravka}</div>
                 <div className="writing no">В начало</div>
               </div>
           </div>
