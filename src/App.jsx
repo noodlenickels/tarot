@@ -152,7 +152,7 @@ export class App extends React.Component {
   }
 
   makeRasclad() {
-    const cas = this.state.isButton;
+    const cas = true;
     this.tick(cas);
   }
 
