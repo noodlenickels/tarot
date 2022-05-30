@@ -128,12 +128,13 @@ export class App extends React.Component {
   }
 
   doExit(){
-    this.setState({prognoz: 'Сегодня карты говорят вам: '})
+    this.state.prognoz = 'Сегодня карты говорят: '
     this.getCards(3);
     console.log(this.state.desc)
     this.state.desc = []
     this.doSmth();
     console.log(this.state.desc)
+    console.log(this.state.prognoz)
     const cas = this.state.isButton;
     this.tick(cas);
   }
@@ -154,6 +155,8 @@ export class App extends React.Component {
   makeRasclad() {
     const cas = true;
     this.tick(cas);
+    console.log(this.state.desc)
+    console.log(this.state.prognoz)
   }
 
   makeRascladSecondTime() {
